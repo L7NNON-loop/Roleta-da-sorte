@@ -41,169 +41,104 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Roleta da Sorte</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+  <div class="ios-app">
+    <div class="ios-card">
+      <div class="ios-head">
+        <h2><i class="fa-solid fa-crown"></i> Roleta Premium</h2>
+        <p>Gire a roleta e desbloqueie seu prêmio exclusivo.</p>
+      </div>
 
+      <div class="ios-timer" id="iosTimer"><i class="fa-regular fa-clock"></i> 01:59</div>
 
-  <div style="text-align:center;">
-    <h2>🎯 Tente a sua sorte! 🎯</h2>
-    <p>Clique no botão e gire a roleta para ganhar prêmios!</p>
-  </div>
+      <div class="wheel-wrap">
+        <img src="images/cQc9WWa.png" alt="Roleta" id="roleta">
+        <div class="pointer"></div>
+      </div>
 
-  <div style="position: relative; width: 300px; height: 300px; margin: auto;">
-    <img src="images/cQc9WWa.png" alt="Roleta" id="roleta" style="width: 100%; height: 100%; display: block; border-radius: 50%;">
-    <div style="
-        position: absolute;
-        top: 50%;
-        right: -20px;
-        transform: translateY(-50%) rotate(180deg);
-        width: 0;
-        height: 0;
-        border-top: 15px solid transparent;
-        border-bottom: 15px solid transparent;
-        border-left: 30px solid red;">
+      <button id="girarBtn" onclick="girarRoleta()"><i class="fa-solid fa-play"></i> Girar agora</button>
+
+      <button id="shareBtn" onclick="shareLink()"><i class="fa-solid fa-share-nodes"></i> Partilhar link</button>
+
+      <button id="termsBtn" onclick="openTerms()"><i class="fa-solid fa-file-contract"></i> Termos e Condições</button>
     </div>
   </div>
 
-  <div style="text-align:center; margin-top: 20px;">
-    <button id="girarBtn" onclick="girarRoleta()" style="padding: 10px 20px; background: orange; border: none;
-                   color: white; border-radius: 10px; cursor: pointer; font-size: 16px;" fdprocessedid="07e52d">
-      🎲 GIRAR
-    </button>
+  <div id="popup" class="overlay" style="display:none;">
+    <div class="modal-card">
+      <h3><i class="fa-solid fa-trophy"></i> Resultado</h3>
+      <p id="popupText"></p>
+      <button id="girarNovamente" onclick="fecharPopUpEGirar()" class="heartbeat-btn" style="display:none;"><i class="fa-solid fa-rotate-right"></i> Girar novamente</button>
+      <a id="popupButton" href="https://txunaplay.com/te44bfd5e" target="_blank" class="heartbeat-btn" style="display:none;"><i class="fa-solid fa-user-plus"></i> Registrar agora</a>
+    </div>
   </div>
+
+  <div id="termsModal" class="overlay" style="display:none;">
+    <div class="modal-card terms-card">
+      <h3><i class="fa-solid fa-file-contract"></i> Termos e Condições</h3>
+      <ul>
+        <li>Oferta válida para novas contas.</li>
+        <li>São permitidas duas tentativas por utilizador.</li>
+        <li>O prêmio exige registro e depósito mínimo conforme instruções.</li>
+      </ul>
+      <button onclick="closeTerms()"><i class="fa-solid fa-check"></i> Entendi</button>
+    </div>
+  </div>
+
+  <audio id="roletaSom" src="media/Roleta.mp3"></audio>
+  <audio id="victorySom" src="media/Celebration.mp3" preload="auto"></audio>
+  <script src="js/confetti.browser.min.js"></script>
 
   <style>
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      25% { transform: scale(1.1); }
-      50% { transform: scale(1.15); }
-      75% { transform: scale(1.1); }
-    }
-    .heartbeat-btn {
-      animation: heartbeat 1s infinite;
-    }
+    .ios-app{display:flex;justify-content:center;padding:18px;font-family:Poppins,sans-serif;background:linear-gradient(180deg,#f4f7ff,#e9eefb)}
+    .ios-card{width:min(430px,100%);background:#fff;border-radius:28px;padding:20px;box-shadow:0 18px 40px rgba(28,43,84,.16)}
+    .ios-head h2{font-size:24px;margin:0;color:#1b2a4a}.ios-head p{font-size:14px;color:#617097;margin:8px 0 12px}
+    .ios-timer{background:#f2f5ff;color:#2b3f72;border-radius:14px;padding:10px 14px;font-weight:600;font-size:14px;text-align:center}
+    .wheel-wrap{position:relative;width:290px;height:290px;margin:16px auto 14px}#roleta{width:100%;height:100%;border-radius:50%}
+    .pointer{position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:22px solid #ff4d4f}
+    #girarBtn,#shareBtn,#termsBtn,.modal-card button,.modal-card a{width:100%;border:0;border-radius:14px;padding:12px 16px;font-weight:600;font-size:14px;margin-top:10px;text-decoration:none;display:block;text-align:center}
+    #girarBtn{background:#0a84ff;color:#fff}#shareBtn{background:#f2f5ff;color:#214177}#termsBtn{background:#101828;color:#fff}
+    .overlay{position:fixed;inset:0;background:rgba(7,10,20,.65);display:flex;align-items:center;justify-content:center;z-index:9999}
+    .modal-card{width:min(420px,92%);background:#fff;border-radius:24px;padding:22px;box-shadow:0 20px 45px rgba(0,0,0,.25)}
+    .modal-card h3{margin:0 0 10px;font-size:22px;color:#15264d}.modal-card p,.terms-card li{font-size:14px;color:#3d4b6a;line-height:1.5}
+    .countdown-builder-container-element{display:none!important}
+    #girarNovamente{background:#0a84ff;color:#fff}#popupButton{background:#22c55e;color:#fff}.terms-card ul{padding-left:18px}
   </style>
-
-  <div id="popup" style="display:none; position:fixed; top:0; left:0;
-                        width:100%; height:100%; background:rgba(0,0,0,0.8);
-                        text-align:center; z-index:9999;">
-    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
-                background:white; padding:30px; border-radius:15px;
-                width:90%; max-width:450px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-      <h3 style="font-size: 28px; margin-bottom: 20px;">🎉 Resultado 🎉</h3>
-      <p id="popupText" style="font-size: 16px; line-height: 1.6; margin: 20px 0;"></p>
-      <button id="girarNovamente" onclick="fecharPopUpEGirar()" class="heartbeat-btn" style="display:none; margin-top:20px; background:orange;
-                     color:white; padding:14px 24px; border:none;
-                     border-radius:8px; cursor:pointer; font-size: 16px; font-weight: bold;">
-        🔁 Girar Novamente
-      </button>
-      <a id="popupButton" href="https://media1.placard.co.mz/redirect.aspx?pid=3319&bid=1690" target="_blank" class="heartbeat-btn" style="display:none; background:orange; color:white;
-                                 padding:14px 24px; border-radius:8px;
-                                 text-decoration:none; margin-top:20px; display:inline-block; font-size: 16px; font-weight: bold;">
-        💰 REGISTRE-SE AGORA!
-      </a>
-    </div>
-  </div>
-
-  <!-- áudio da roleta -->
-  <audio id="roletaSom" src="media/Roleta.mp3"></audio>
-  <!-- áudio de vitória -->
-  <audio id="victorySom" src="media/Celebration.mp3" preload="auto"></audio>
-
-  <script src="js/confetti.browser.min.js"></script>
 
   <script>
     let tentativas = 0;
+    let remaining = 119;
+    setInterval(()=>{ if(remaining>0){ remaining--; const m=String(Math.floor(remaining/60)).padStart(2,'0'); const s=String(remaining%60).padStart(2,'0'); document.getElementById('iosTimer').innerHTML=`<i class="fa-regular fa-clock"></i> ${m}:${s}`;}},1000);
 
     function girarRoleta() {
       const roleta = document.getElementById('roleta');
       const som = document.getElementById('roletaSom');
-      let anguloFinal = 0;
-      let tempoGiro = 0;
-      tentativas++;
-
-      if (tentativas === 1) {
-        anguloFinal = 285 + 16 * 360;
-        tempoGiro = 9;
-      } else if (tentativas === 2) {
-        anguloFinal = 320 + 24 * 360;
-        tempoGiro = 8;
-      }
-
-      som.currentTime = 0;
-      som.volume = 1;
-      som.play();
-
+      let anguloFinal = 0; let tempoGiro = 0; tentativas++;
+      if (tentativas === 1) { anguloFinal = 288 + 15 * 360; tempoGiro = 8.5; }
+      else if (tentativas === 2) { anguloFinal = 324 + 20 * 360; tempoGiro = 8; }
+      som.currentTime = 0; som.volume = 1; som.play();
       roleta.style.transition = `transform ${tempoGiro}s cubic-bezier(0.1, 0.8, 0.3, 1)`;
       roleta.style.transform = `rotate(${anguloFinal}deg)`;
-
       document.getElementById('girarBtn').disabled = true;
-
-      let steps = 40;
-      let delay = (tempoGiro * 1000) / steps;
-      let stepCount = 0;
-
-      const volumeFade = setInterval(() => {
-        if (stepCount >= steps) {
-          clearInterval(volumeFade);
-        } else {
-          som.volume = Math.max(0, 1 - stepCount / steps);
-          stepCount++;
-        }
-      }, delay);
-
-      setTimeout(() => {
-        som.pause();
-        setTimeout(showPopUp, 500);
-      }, tempoGiro * 1000);
+      setTimeout(() => { som.pause(); setTimeout(showPopUp, 450); }, tempoGiro * 1000);
     }
 
     function showPopUp() {
       let texto = "";
       const botaoGirar = document.getElementById('girarNovamente');
       const botaoRegistro = document.getElementById('popupButton');
-
-      if (tentativas === 1) {
-        texto = "❌ Não foi dessa vez!<br>Você tem mais 1 chance.<br>Clique no botão abaixo e gire novamente!";
-        botaoGirar.style.display = "inline-block";
-        botaoRegistro.style.display = "none";
-      } else if (tentativas === 2) {
-        texto = `
-          🤑 Parabéns! Você ganhou <b>5.000 Meticais!<br><br>
-          Para receber, registre-se na plataforma clicando no botão abaixo e <b>deposite 1 ou 100 Meticais para que possamos confirmar seu número e enviar o valor.<br><br>
-          ⚠️ <b>O prêmio só será entregue para quem criar uma nova conta na plataforma.<br>
-          Se já possui uma conta, é necessário criar uma nova para receber o valor na sua carteira móvel!
-        `;
-        botaoGirar.style.display = "none";
-        botaoRegistro.style.display = "inline-block";
-
-        const victory = document.getElementById('victorySom');
-        victory.currentTime = 0;
-        victory.play();
-
-        startConfetti();
-      }
-
+      if (tentativas === 1) { texto = `<i class="fa-solid fa-circle-info"></i> Quase! Você ainda tem mais uma chance premium.`; botaoGirar.style.display = "block"; botaoRegistro.style.display = "none"; }
+      else { texto = `<i class="fa-solid fa-coins"></i> Parabéns! Você ganhou 5.000 Meticais. Complete o registro para receber.`; botaoGirar.style.display = "none"; botaoRegistro.style.display = "block"; document.getElementById('victorySom').play(); startConfetti(); }
       document.getElementById('popupText').innerHTML = texto;
-      document.getElementById('popup').style.display = 'block';
+      document.getElementById('popup').style.display = 'flex';
     }
-
-    function fecharPopUpEGirar() {
-      document.getElementById('popup').style.display = 'none';
-      document.getElementById('girarBtn').disabled = false;
-      girarRoleta();
-    }
-
-    function startConfetti() {
-      const duration = 3 * 1000;
-      const end = Date.now() + duration;
-      (function frame() {
-        confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
-        confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
-        if (Date.now() < end) requestAnimationFrame(frame);
-      })();
-    }
+    function fecharPopUpEGirar(){document.getElementById('popup').style.display='none';document.getElementById('girarBtn').disabled=false;girarRoleta();}
+    function startConfetti(){const end=Date.now()+2600;(function frame(){confetti({particleCount:5,angle:60,spread:55,origin:{x:0}});confetti({particleCount:5,angle:120,spread:55,origin:{x:1}});if(Date.now()<end)requestAnimationFrame(frame);})();}
+    function shareLink(){navigator.clipboard?.writeText('https://1winner-roleta.vercel.app'); alert('Link copiado: https://1winner-roleta.vercel.app');}
+    function openTerms(){document.getElementById('termsModal').style.display='flex';}
+    function closeTerms(){document.getElementById('termsModal').style.display='none';}
   </script>
-
 
 
 </div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div><div class="is-relative rocketp-section"><div class="margin-padding-container rocketp-aux-section box-hover columns is-flex
