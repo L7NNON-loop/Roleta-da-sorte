@@ -41,12 +41,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Roleta da Sorte</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-
-
-  <div style="text-align:center;">
-    <h2>🎯 Tente a sua sorte! 🎯</h2>
-    <p>Clique no botão e gire a roleta para ganhar prêmios!</p>
+  <div class="wheel-app">
+  <div style="text-align:center;" class="hero-box">
+    <h2><i class="fa-solid fa-bullseye"></i> Tente a sua sorte! <i class="fa-solid fa-bullseye"></i></h2>
+    <p><i class="fa-solid fa-gift"></i> Clique no botão e gire a roleta para ganhar prêmios!</p>
   </div>
 
   <div style="position: relative; width: 300px; height: 300px; margin: auto;">
@@ -67,9 +67,17 @@
   <div style="text-align:center; margin-top: 20px;">
     <button id="girarBtn" onclick="girarRoleta()" style="padding: 10px 20px; background: orange; border: none;
                    color: white; border-radius: 10px; cursor: pointer; font-size: 16px;" fdprocessedid="07e52d">
-      🎲 GIRAR
+      <i class="fa-solid fa-dice"></i> GIRAR
     </button>
   </div>
+
+  <style>
+    .wheel-app {max-width: 520px; margin: 24px auto; background: linear-gradient(145deg,#151515,#262626); border: 1px solid #363636; border-radius: 20px; padding: 24px; box-shadow: 0 18px 40px rgba(0,0,0,.45);}    
+    .hero-box h2 {color: #fff; font-size: 30px; margin-bottom: 8px;}
+    .hero-box p {color: #f8f8f8; opacity: .95;}
+    #girarBtn {background: linear-gradient(135deg,#ff9100,#ff5f00)!important; font-weight:700; letter-spacing:.4px; box-shadow: 0 8px 20px rgba(255,111,0,.45);}    
+    #girarBtn:hover {transform: translateY(-1px);}
+  </style>
 
   <style>
     @keyframes heartbeat {
@@ -89,17 +97,17 @@
     <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
                 background:white; padding:30px; border-radius:15px;
                 width:90%; max-width:450px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-      <h3 style="font-size: 28px; margin-bottom: 20px;">🎉 Resultado 🎉</h3>
+      <h3 style="font-size: 28px; margin-bottom: 20px;"><i class="fa-solid fa-trophy"></i> Resultado</h3>
       <p id="popupText" style="font-size: 16px; line-height: 1.6; margin: 20px 0;"></p>
       <button id="girarNovamente" onclick="fecharPopUpEGirar()" class="heartbeat-btn" style="display:none; margin-top:20px; background:orange;
                      color:white; padding:14px 24px; border:none;
                      border-radius:8px; cursor:pointer; font-size: 16px; font-weight: bold;">
-        🔁 Girar Novamente
+        <i class="fa-solid fa-rotate-right"></i> Girar Novamente
       </button>
       <a id="popupButton" href="https://media1.placard.co.mz/redirect.aspx?pid=3319&bid=1690" target="_blank" class="heartbeat-btn" style="display:none; background:orange; color:white;
                                  padding:14px 24px; border-radius:8px;
                                  text-decoration:none; margin-top:20px; display:inline-block; font-size: 16px; font-weight: bold;">
-        💰 REGISTRE-SE AGORA!
+        <i class="fa-solid fa-wallet"></i> REGISTRE-SE AGORA!
       </a>
     </div>
   </div>
@@ -163,14 +171,14 @@
       const botaoRegistro = document.getElementById('popupButton');
 
       if (tentativas === 1) {
-        texto = "❌ Não foi dessa vez!<br>Você tem mais 1 chance.<br>Clique no botão abaixo e gire novamente!";
+        texto = `<i class="fa-solid fa-circle-xmark"></i> Não foi dessa vez!<br>Você tem mais 1 chance.<br>Clique no botão abaixo e gire novamente!`;
         botaoGirar.style.display = "inline-block";
         botaoRegistro.style.display = "none";
       } else if (tentativas === 2) {
         texto = `
-          🤑 Parabéns! Você ganhou <b>5.000 Meticais!<br><br>
+          <i class="fa-solid fa-coins"></i> Parabéns! Você ganhou <b>5.000 Meticais!<br><br>
           Para receber, registre-se na plataforma clicando no botão abaixo e <b>deposite 1 ou 100 Meticais para que possamos confirmar seu número e enviar o valor.<br><br>
-          ⚠️ <b>O prêmio só será entregue para quem criar uma nova conta na plataforma.<br>
+          <i class="fa-solid fa-triangle-exclamation"></i> <b>O prêmio só será entregue para quem criar uma nova conta na plataforma.<br>
           Se já possui uma conta, é necessário criar uma nova para receber o valor na sua carteira móvel!
         `;
         botaoGirar.style.display = "none";
@@ -205,6 +213,8 @@
   </script>
 
 
+
+  </div>
 
 </div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div><div class="is-relative rocketp-section"><div class="margin-padding-container rocketp-aux-section box-hover columns is-flex
                     background-image-adptative-section
